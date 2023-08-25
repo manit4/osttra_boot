@@ -2,6 +2,7 @@ package com.osttra.repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import org.springframework.stereotype.Repository;
 
@@ -10,30 +11,128 @@ import com.osttra.utils.DBUtils;
 
 @Repository
 public class UserRepository {
-	
+
 	public UserRepository() {
-		
+
 		System.out.println("inside UserREpository constr");
 	}
-	
+
 	public void add(User user) {
-		
+
 		try {
-			
+
 			Connection connection = DBUtils.getConnection();
-			
-			PreparedStatement statement = connection.prepareStatement("insert into user values(?, ?, ?, ?)");
-			
+
+			PreparedStatement statement = connection.prepareStatement("insert into user values(?, ?, ?, ?, ?)");
+
 			statement.setString(1, user.getUsername());
 			statement.setString(2, user.getPassword());
 			statement.setString(3, user.getCompleteName());
 			statement.setString(4, user.getEmail());
+			statement.setString(5, user.getRole());
 			statement.executeUpdate();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			System.out.println("inside catch of add() of UserRepository...");
 			e.printStackTrace();
 		}
 	}
 
+	public User getUser(String username, String password) {
+
+		User user = null;
+
+		try {
+
+			Connection connection = DBUtils.getConnection();
+
+			PreparedStatement statement = connection
+					.prepareStatement("select * from user where username = ? and Password = ?");
+
+			statement.setString(1, username);
+			statement.setString(2, password);
+
+			ResultSet resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+
+				String completeName = resultSet.getString(3);
+				String email = resultSet.getString(4);
+				String role = resultSet.getString(5);
+
+				user = new User(username, password, completeName, email, role);
+			}
+		} catch (Exception e) {
+			System.out.println("inside catch of getUser(username and password) of UserRepository...");
+			e.printStackTrace();
+		}
+
+		return user;
+	}
+
+	public User getUser(String username) {
+
+		User user = null;
+
+		try {
+
+			Connection connection = DBUtils.getConnection();
+
+			PreparedStatement statement = connection.prepareStatement("select * from user where username = ?");
+
+			statement.setString(1, username);
+
+			ResultSet resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+
+				String password = resultSet.getString(2);
+				String completeName = resultSet.getString(3);
+				String email = resultSet.getString(4);
+				String role = resultSet.getString(5);
+
+				user = new User(username, password, completeName, email, role);
+			}
+		} catch (Exception e) {
+			System.out.println("inside catch of getUser(username and password) of UserRepository...");
+			e.printStackTrace();
+		}
+
+		return user;
+	}
+
+	public void delete(String username) {
+
+		try {
+
+			Connection connection = DBUtils.getConnection();
+
+			PreparedStatement statement = connection.prepareStatement("delete from user where username = ?");
+
+			statement.setString(1, username);
+
+			statement.executeUpdate();
+		} catch (Exception e) {
+			System.out.println("inside catch of getUser(username and password) of UserRepository...");
+			e.printStackTrace();
+		}
+	}
+	
+	public void update(User user) {
+		try {
+
+			Connection connection = DBUtils.getConnection();
+
+			PreparedStatement statement = connection.prepareStatement("update user set complete_name = ?, email = ? where username = ?");
+
+			statement.setString(1, user.getCompleteName());
+			statement.setString(2, user.getEmail());
+			statement.setString(3, user.getUsername());
+
+			statement.executeUpdate();
+		} catch (Exception e) {
+			System.out.println("inside catch of update of UserRepository...");
+			e.printStackTrace();
+		}
+		
+	}
 }

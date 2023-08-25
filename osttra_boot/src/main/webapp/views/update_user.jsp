@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+	<%@ page import="com.osttra.to.User" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,43 +13,35 @@
 	crossorigin="anonymous">
 </head>
 <body>
+
+<%-- <%
+	User user = (User) session.getAttribute("user");
+
+%> --%>
 	<h1 style="margin-left: 450px">Osttra Book Management</h1>
 	<h2 style="margin-left: 450px; color: red;">Provide your Details
 		here!!</h2>
 		
 	<div style="margin-left: 450px; margin-right: 500px">
-		<form action="register" method="post">
+		<form action="update" method="post">
 			<div class="mb-3">
 				<label for="exampleFormControlInput1" class="form-label">Username</label>
-				<input type="text" name="username" class="form-control">
+				<input type="text" name="username" readonly value="${user.getUsername() }" class="form-control">
 			</div>
-			<div class="mb-3">
-				<label for="exampleFormControlInput1" class="form-label">Password</label>
-				<input type="text" name="password" class="form-control">
-			</div>
+			
 			<div class="mb-3">
 				<label for="exampleFormControlInput1" class="form-label">Complete
-					Name</label> <input type="text" name="completeName" class="form-control">
+					Name</label> <input type="text" name="completeName" value="${user.getCompleteName() }" class="form-control">
 			</div>
 			<div class="mb-3">
 				<label for="exampleFormControlInput1" class="form-label">Email</label>
-				<input type="text" name="email" class="form-control">
+				<input type="text" name="email" value="${user.getEmail() }" class="form-control">
 			</div>
-
-			<div class="form-check">
-				<input class="form-check-input" type="radio" name="role" value = "Admin"
-					id="flexRadioDefault1"> <label class="form-check-label"
-					for="flexRadioDefault1"> Admin </label>
-			</div>
-			<div class="form-check">
-				<input class="form-check-input" type="radio" name="role" value="Customer"
-					id="flexRadioDefault2" checked> <label
-					class="form-check-label" for="flexRadioDefault2"> Customer </label>
-			</div>
+<%-- <%= user %> --%>
 
 
 			<button style="margin-left: 130px" type="submit"
-				class="btn btn-primary">Register</button>
+				class="btn btn-primary">Update</button>
 			<br>
 		</form>
 		<a href="/">Back to Home Page</a>
