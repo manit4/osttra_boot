@@ -1,7 +1,8 @@
 package com.osttra.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.osttra.repository.UserRepository;
@@ -42,6 +43,11 @@ public class UserService {
 	public void update(User user) {
 		
 		userRepository.update(user);
+	}
+	
+	public List<User> getUsers() {
+		
+		return userRepository.getUsers();
 	}
 	
 	

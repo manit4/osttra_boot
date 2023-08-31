@@ -1,13 +1,13 @@
 package com.osttra.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.osttra.service.UserService;
@@ -82,6 +82,14 @@ public class UserController {
 			
 			HttpSession session = request.getSession();
 			session.setAttribute("user", user);
+			
+			if( user.getRole().equals("Admin")) {
+				
+				List<User> users = userService.getUsers();
+				session.setAttribute("users", users);
+			}
+			
+			
 			//modelAndView.addObject("user", user);
 		}
 		else {
@@ -93,13 +101,25 @@ public class UserController {
 	}
 	
 	@GetMapping("/delete/{username}")
-	public String delete(@PathVariable String username) {
+	public ModelAndView delete(@PathVariable String username, HttpServletRequest request) {
 		
 		System.out.println(username);
 		
-		userService.delete(username);
+		ModelAndView modelAndView = new ModelAndView("index");
 		
-		return "index";
+		HttpSession session = request.getSession(false);
+		
+		if( session != null) {
+			
+			userService.delete(username);
+			modelAndView.addObject("errorMessage", "You are not authenticated, please login first!!");
+		}
+		else {
+			
+			modelAndView.addObject("errorMessage", "Wrong Credentials, please try again!!");
+		}
+		
+		return modelAndView;
 	}
 	
 	@GetMapping("/updatePage/{username}")

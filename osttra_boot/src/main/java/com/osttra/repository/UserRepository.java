@@ -3,6 +3,8 @@ package com.osttra.repository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
@@ -100,6 +102,39 @@ public class UserRepository {
 		return user;
 	}
 
+	public List<User> getUsers() {
+
+		User user = null;
+		List<User> users = new ArrayList<>();
+
+		try {
+
+			Connection connection = DBUtils.getConnection();
+
+			PreparedStatement statement = connection.prepareStatement("select * from user");
+			ResultSet resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				String username = resultSet.getString(1);
+				String password = resultSet.getString(2);
+				String completeName = resultSet.getString(3);
+				String email = resultSet.getString(4);
+				String role = resultSet.getString(5);
+				
+
+				user = new User(username, password, completeName, email, role);
+				System.out.println("User is :"+user);
+				users.add(user);
+				System.out.println("users are :"+users);
+			}
+		} catch (Exception e) {
+			System.out.println("inside catch of getUsers of UserRepository...");
+			e.printStackTrace();
+		}
+
+		return users;
+	}
+	
 	public void delete(String username) {
 
 		try {
