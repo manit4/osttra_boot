@@ -14,12 +14,12 @@ public class OsttraBootApplication {
 		System.out.println();
 	}
 	
-	@Bean
-	public User getUser() {
-		
-		System.out.println("inside getUser bean...");
-		
-		return new User();
-	}
+//	@Bean
+//	public User getUser() {
+//		
+//		System.out.println("inside getUser bean...");
+//		
+//		return new User();
+//	}
 
 }

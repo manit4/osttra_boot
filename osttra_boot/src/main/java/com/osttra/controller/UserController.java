@@ -125,6 +125,22 @@ public class UserController {
 			
 	}
 	
+//	@GetMapping("/updatePage/{username}")
+//	public ModelAndView updatePage(@PathVariable String username) {
+//		System.out.println("ZUserame is "+username);
+//		
+//		ModelAndView modelAndView = new ModelAndView("update_user");
+//		
+//		
+//		
+//		User user = userService.getUser(username);
+//		
+//		modelAndView.addObject("user", user);
+//		
+//		return modelAndView;
+//			
+//	}
+	
 	@PutMapping(value = "/update")
 	public void update(User user, HttpServletRequest request) {
 		
