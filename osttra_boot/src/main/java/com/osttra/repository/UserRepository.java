@@ -120,12 +120,11 @@ public class UserRepository {
 				String completeName = resultSet.getString(3);
 				String email = resultSet.getString(4);
 				String role = resultSet.getString(5);
-				
 
 				user = new User(username, password, completeName, email, role);
-				System.out.println("User is :"+user);
+
 				users.add(user);
-				System.out.println("users are :"+users);
+
 			}
 		} catch (Exception e) {
 			System.out.println("inside catch of getUsers of UserRepository...");
@@ -134,7 +133,7 @@ public class UserRepository {
 
 		return users;
 	}
-	
+
 	public void delete(String username) {
 
 		try {
@@ -151,13 +150,14 @@ public class UserRepository {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void update(User user) {
 		try {
 
 			Connection connection = DBUtils.getConnection();
 
-			PreparedStatement statement = connection.prepareStatement("update user set complete_name = ?, email = ? where username = ?");
+			PreparedStatement statement = connection
+					.prepareStatement("update user set complete_name = ?, email = ? where username = ?");
 
 			statement.setString(1, user.getCompleteName());
 			statement.setString(2, user.getEmail());
@@ -168,6 +168,6 @@ public class UserRepository {
 			System.out.println("inside catch of update of UserRepository...");
 			e.printStackTrace();
 		}
-		
+
 	}
 }

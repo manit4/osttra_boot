@@ -21,9 +21,10 @@
 
 <%
 	User user = (User) session.getAttribute("user");
-	List<User> users = (List<User>) session.getAttribute("users");
+	List<User> users = (List<User>) request.getAttribute("users");
 
 %>
+session is on welcome_page.jsp <%= session %>
 
 
 
@@ -57,15 +58,15 @@ ${ updateSuccessMsg }
       <td>${ user.getCompleteName() }</td>
       <td>${ user.getEmail() }</td>
       <td>${ user.getRole() }</td>
-      <td><a href = "delete/${ user.getUsername() }">Delete</a></td>
-      <td><a href = "updatePage/${ user.getUsername() }">Update</a></td>
+      <td><a href = "/delete/${ user.getUsername() }">Delete</a></td>
+      <td><a href = "/updatePage/${ user.getUsername() }">Update</a></td>
     </tr>
   </tbody>
 </table>
 
 <hr>
 <%
-if(users != null && user.getRole().equalsIgnoreCase("Admin")) {
+if(users != null && user.getRole().equalsIgnoreCase("Admin") && users.size() > 1) {
 %>
 <table class="table">
   <thead>
@@ -95,8 +96,8 @@ if(users != null && user.getRole().equalsIgnoreCase("Admin")) {
       <td><%= users.get(i).getCompleteName()%></td>
       <td><%= users.get(i).getEmail() %></td>
       <td><%= users.get(i).getRole() %></td>
-      <td><a href = "delete/<%= users.get(i).getUsername()%>">Delete</a></td>
-      <td><a href = "updatePage/<%= users.get(i).getUsername()%>">Update</a></td>
+      <td><a href = "/delete/<%= users.get(i).getUsername()%>">Delete</a></td>
+      <td><a href = "/updatePage/<%= users.get(i).getUsername()%>">Update</a></td>
     </tr>
     <%
     	}

@@ -18,14 +18,13 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UserController {
-	
+
 	@Autowired
 	UserService userService;
-	
+
 	public UserController() {
 		System.out.println("inside UserController constr...");
 	}
-	
 
 //	@PostMapping("/register")
 //	public String register(String username, String password, String completeName, String email) {
@@ -34,17 +33,17 @@ public class UserController {
 //		
 //		return "index";
 //	}
-	
+
 	@PostMapping("/register")
 	public String register(User user) {
-		
-		System.out.println("inside register()..."+user);
-		
+
+		System.out.println("inside register()..." + user);
+
 		userService.register(user);
-		
+
 		return "index";
 	}
-	
+
 //	@PostMapping("/login")
 //	public ModelAndView login(String username, String password) {
 //		
@@ -66,85 +65,99 @@ public class UserController {
 //		
 //		return modelAndView;
 //	}
-	
+
 	@PostMapping("/login")
 	public ModelAndView login(String username, String password, HttpServletRequest request) {
-		
-		System.out.println("inside login mapping() "+username+", "+password);
-		
+
+		System.out.println("inside login mapping() " + username + ", " + password);
+
 		User user = userService.login(username, password);
-		
+
 		ModelAndView modelAndView = null;
-		
-		if( user != null ) {
-			
+
+		if (user != null) {
+
 			modelAndView = new ModelAndView("welcome_page");
-			
+
 			HttpSession session = request.getSession();
+			System.out.println("session is while login "+session);
 			session.setAttribute("user", user);
-			
-			if( user.getRole().equals("Admin")) {
-				
+
+			if (user.getRole().equals("Admin")) {
+
 				List<User> users = userService.getUsers();
-				session.setAttribute("users", users);
+				// session.setAttribute("users", users);
+				// request.setAttribute("users", users);
+				modelAndView.addObject("users", users);
 			}
-			
-			
-			//modelAndView.addObject("user", user);
-		}
-		else {
+
+			// modelAndView.addObject("user", user);
+		} else {
 			modelAndView = new ModelAndView("index");
 			modelAndView.addObject("errorMessage", "Wrong Credentials, please try again!!");
 		}
-		
+
 		return modelAndView;
 	}
-	
+
 	@GetMapping("/delete/{username}")
 	public ModelAndView delete(@PathVariable String username, HttpServletRequest request) {
-		
+
 		System.out.println(username);
-		
-		ModelAndView modelAndView = new ModelAndView("index");
-		
+
+		ModelAndView modelAndView = null;
+
 		HttpSession session = request.getSession(false);
-		
-		if( session != null) {
-			
+
+		if (session != null) {
+			System.out.println("inside if of delete");
 			userService.delete(username);
+
+			if (((User) session.getAttribute("user")).getRole().equals("Admin")) {
+
+				modelAndView = new ModelAndView("welcome_page");
+				List<User> users = userService.getUsers();
+				modelAndView.addObject("users", users);
+			} else {
+				modelAndView = new ModelAndView("index");
+				modelAndView.addObject("deleteSucessMsg", "Your Account has been deleted successfully..");
+			}
+		} else {
+			System.out.println("insdie else of delete...");
+			modelAndView = new ModelAndView("index");
 			modelAndView.addObject("errorMessage", "You are not authenticated, please login first!!");
 		}
-		else {
-			
-			modelAndView.addObject("errorMessage", "Wrong Credentials, please try again!!");
-		}
-		
+
 		return modelAndView;
 	}
-	
+
 	@GetMapping("/updatePage/{username}")
 	public ModelAndView updatePage(@PathVariable String username, HttpServletRequest request) {
-		System.out.println("ZUserame is "+username);
-		
+		System.out.println("ZUserame is " + username);
+
 		ModelAndView modelAndView = null;
-		
+
 		HttpSession session = request.getSession(false);
+		System.out.println("Session is while upadting page "+session);
 		
-		//User user = userService.getUser(username);
-		
-		if( session != null ) {
+		User deletingUser = userService.getUser(username);
+
+		// User user = userService.getUser(username);
+
+		if (session != null) {
+			System.out.println("Is session new "+session.isNew());
 			modelAndView = new ModelAndView("update_user");
-		}
-		else {
+			modelAndView.addObject("deletingUser", deletingUser);
+		} else {
 			modelAndView = new ModelAndView("index");
 		}
-		
-		//modelAndView.addObject("user", user);
-		
+
+		// modelAndView.addObject("user", user);
+
 		return modelAndView;
-			
+
 	}
-	
+
 //	@GetMapping("/updatePage/{username}")
 //	public ModelAndView updatePage(@PathVariable String username) {
 //		System.out.println("ZUserame is "+username);
@@ -160,26 +173,75 @@ public class UserController {
 //		return modelAndView;
 //			
 //	}
-	
+
 	@PutMapping(value = "/update")
 	public void update(User user, HttpServletRequest request) {
-		
+
 		System.out.println(user);
-		
+
 		userService.update(user);
-		
+
 		HttpSession session = request.getSession(false);
-		
-		User oldUser = ( User )session.getAttribute("user");
-		
+
+		User oldUser = (User) session.getAttribute("user");
+
 		String password = oldUser.getPassword();
 		String role = oldUser.getRole();
-		
-		user.setPassword(password);   user.setRole(role);
-		
+
+		user.setPassword(password);
+		user.setRole(role);
+
 		session.setAttribute("user", user);
-		
+
 		ModelAndView modelAndView = new ModelAndView("welcome_page");
 		modelAndView.addObject("updateSuccessMsg", "Your Profile is updated successfully");
 	}
+
+	@GetMapping("/welcome")
+	public ModelAndView welcomeHome(HttpServletRequest request) {
+
+		HttpSession session = request.getSession(false);
+		ModelAndView modelAndView = null;
+
+		if (session != null) {
+
+			if (((User) session.getAttribute("user")).getRole().equals("Admin")) {
+
+				modelAndView = new ModelAndView("welcome_page");
+				List<User> users = userService.getUsers();
+				modelAndView.addObject("users", users);
+			} else {
+
+				modelAndView = new ModelAndView("welcome_page");
+			}
+
+		} else {
+
+			modelAndView = new ModelAndView("index");
+			modelAndView.addObject("errorMessage", "You are not authenticated, please login first!!");
+		}
+		return modelAndView;
+	}
+
+	@GetMapping("/logout")
+	public ModelAndView logout(HttpServletRequest request) {
+
+		ModelAndView modelAndView =  new ModelAndView("index");
+
+		HttpSession session = request.getSession(false);
+		System.out.println("Session is while logout "+session);
+
+		if (session != null) {
+
+			session.invalidate();
+			
+			modelAndView.addObject("logoutMessage", "Logged-out successfully..");
+		} else {
+
+			modelAndView.addObject("errorMessage", "You were never logged-in, please login first to logout!!");
+		}
+
+		return modelAndView;
+	}
+
 }

@@ -13,9 +13,14 @@
 	crossorigin="anonymous">
 </head>
 <body>
+
+<%@ page session="false" %>
+
 	<h1 style="margin-left: 450px">Osttra Book Management</h1>
 	<div style="margin-left: 450px; margin-right: 500px">
 		${ errorMessage }
+		${ deleteSucessMsg }
+		${ logoutMessage }
 		<form action="/login" method="post">
 			<div class="mb-3">
 				<label for="exampleFormControlInput1" class="form-label">Username</label>

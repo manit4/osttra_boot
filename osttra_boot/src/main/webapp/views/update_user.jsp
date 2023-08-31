@@ -14,6 +14,8 @@
 </head>
 <body>
 
+<jsp:include page="header.jsp"/>
+
 <%-- <%
 	User user = (User) session.getAttribute("user");
 
@@ -26,16 +28,16 @@
 		<form action="update" method="post">
 			<div class="mb-3">
 				<label for="exampleFormControlInput1" class="form-label">Username</label>
-				<input type="text" name="username" readonly value="${user.getUsername() }" class="form-control">
+				<input type="text" name="username" readonly value="${deletingUser.getUsername() }" class="form-control">
 			</div>
 			
 			<div class="mb-3">
 				<label for="exampleFormControlInput1" class="form-label">Complete
-					Name</label> <input type="text" name="completeName" value="${user.getCompleteName() }" class="form-control">
+					Name</label> <input type="text" name="completeName" value="${deletingUser.getCompleteName() }" class="form-control">
 			</div>
 			<div class="mb-3">
 				<label for="exampleFormControlInput1" class="form-label">Email</label>
-				<input type="text" name="email" value="${user.getEmail() }" class="form-control">
+				<input type="text" name="email" value="${deletingUser.getEmail() }" class="form-control">
 			</div>
 <%-- <%= user %> --%>
 

@@ -23,7 +23,7 @@ This is out of header.jsp<%= user %>
     <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link active" aria-current="page" href="/welcome">Home</a>
         </li>
          <% 
          	if(role.equalsIgnoreCase("admin")) {
@@ -41,7 +41,7 @@ This is out of header.jsp<%= user %>
           <a class="nav-link active" aria-current="page" href="#">Time-Sheet</a>
         </li>
          <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Logout</a>
+          <a class="nav-link active" aria-current="page" href="/logout">Logout</a>
         </li>
       </ul>
       <form class="d-flex">
