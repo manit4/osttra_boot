@@ -9,12 +9,12 @@ import com.osttra.repository.UserRepository;
 import com.osttra.to.User;
 
 @Service
-public class UserService {
+public class UserServiceImpl implements IUserService {
 
 	@Autowired
 	private UserRepository userRepository;
 
-	public UserService() {
+	public UserServiceImpl() {
 		System.out.println("inside Userservice constr...");
 	}
 

@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.osttra.service.UserService;
+import com.osttra.service.IUserService;
+import com.osttra.service.UserServiceImpl;
 import com.osttra.to.User;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,8 +20,11 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class UserController {
 
+//	@Autowired
+//	UserServiceImpl userService;
+	
 	@Autowired
-	UserService userService;
+	IUserService userService;
 
 	public UserController() {
 		System.out.println("inside UserController constr...");
