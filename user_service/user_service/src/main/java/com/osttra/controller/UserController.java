@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,6 +14,7 @@ import com.osttra.to.Contact;
 import com.osttra.to.User;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
 	
 	@Autowired
@@ -24,7 +26,9 @@ public class UserController {
 	@GetMapping("/getUser/{username}")
 	public User getUser(@PathVariable String username) {
 		
-		List<Contact> contacts = restTemplate.getForObject("http://localhost:8081/contact/user/"+username, List.class);
+//		List<Contact> contacts = restTemplate.getForObject("http://localhost:8081/contact/user/"+username, List.class);
+		
+		List<Contact> contacts = restTemplate.getForObject("http://contact-service/contact/user/"+username, List.class);
 		
 		User user = userServiceImpl.getUser(username);
 		user.setContacts(contacts);
