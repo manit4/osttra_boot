@@ -15,8 +15,8 @@ public class SigninController {
 	@Autowired
 	UserRepository userRepository;
 	
-	@Autowired
-	BCryptPasswordEncoder bCryptPasswordEncoder;
+//	@Autowired
+//	BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@GetMapping("/signin")
 	public String signin() {
@@ -30,21 +30,21 @@ public class SigninController {
 		return "registration";
 	}
 	
-	@PostMapping("/register")
-	public String register(User user) {
-		
-		System.out.println(user);
-		
-		String password = user.getPassword();
-		String encodedPassword = this.bCryptPasswordEncoder.encode(password);
-		System.out.println(encodedPassword);
-		user.setPassword(encodedPassword);
-		
-		
-		userRepository.save(user);
-		
-		return "welcome";
-	}
+//	@PostMapping("/register")
+//	public String register(User user) {
+//		
+//		System.out.println(user);
+//		
+//		String password = user.getPassword();
+//		String encodedPassword = this.bCryptPasswordEncoder.encode(password);
+//		System.out.println(encodedPassword);
+//		user.setPassword(encodedPassword);
+//		
+//		
+//		userRepository.save(user);
+//		
+//		return "welcome";
+//	}
 
 	
 }
